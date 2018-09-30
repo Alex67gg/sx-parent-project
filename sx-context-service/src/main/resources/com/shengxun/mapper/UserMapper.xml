@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shengxun.mapper.UserMapper" >
+
+  <resultMap id="BaseResultMap" type="com.shengxun.entity.User" >
+    <id column="id" property="id"  />
+    <result column="cooperative_partner" property="cooperative_partner"/>
+    <result column="login_name" property="login_name"/>
+    <result column="mobile" property="mobile"/>
+    <result column="email" property="email"/>
+    <result column="contect_person" property="contect_person"/>
+    <result column="company_name" property="company_name"/>
+    <result column="status" property="status"/>
+    <result column="template_id" property="template_id"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cooperative_partner, login_name, mobile, email,contect_person,company_name,template_state,template_id
+  </sql>
+  <select id="selectUserByCondition" resultMap="BaseResultMap">
+    SELECT * FROM sx_user su
+    WHERE 1 = 1
+    <if test="searchName != null and searchName !=''">
+      AND (
+      su.company_name LIKE concat('%',#{searchName}, '%')
+      OR su.login_name LIKE concat('%',#{searchName}, '%')
+      OR su.mobile LIKE concat('%',#{searchName}, '%')
+      OR su.cooperative_partner LIKE concat('%',#{searchName}, '%')
+      OR su.contect_person LIKE concat('%',#{searchName}, '%')
+      OR su.email LIKE concat('%',#{searchName}, '%')
+      )
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    SELECT
+    su.id,
+	su.login_name,
+	su.contect_person,
+	su.mobile,
+	su.cooperative_partner,
+	su.company_name,
+	su.email,
+	stu.id template_id,
+	stu.`status`
+    FROM
+    sx_user su
+    LEFT JOIN sx_industry_user siu ON su.id = siu.user_id
+    LEFT JOIN sx_template_user stu ON stu.industry_user_id = siu.id
+    WHERE
+    su.id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectCompanyName" resultMap="BaseResultMap">
+        SELECT
+        su.id,
+        su.company_name
+    FROM
+        sx_user su
+    where 1=1
+        <if test="cooperative_partner != null and cooperative_partner !=''">
+          and su.cooperative_partner LIKE '%' #{cooperative_partner,jdbcType=VARCHAR} '%'
+        </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sx_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.shengxun.entity.User" >
+    insert into sx_user (id, cooperative_partner, login_name,
+      mobile, email)
+    values (#{id,jdbcType=BIGINT}, #{cooperativePartner,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shengxun.entity.User" >
+    insert into sx_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cooperativePartner != null" >
+        cooperative_partner,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cooperativePartner != null" >
+        #{cooperativePartner,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shengxun.entity.User" >
+    update sx_user
+    <set >
+      <if test="cooperativePartner != null" >
+        cooperative_partner = #{cooperativePartner,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateTemplateStatus" parameterType="map">
+    update sx_template_user
+    set status = #{status,jdbcType=VARCHAR}
+    where id = #{template_id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.shengxun.entity.User" >
+    update sx_user
+    set cooperative_partner = #{cooperativePartner,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

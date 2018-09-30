@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shengxun.mapper.DialogueMapper" >
+  <resultMap id="BaseResultMap" type="com.shengxun.entity.Dialogue" >
+    <id column="id" property="id"  />
+    <result column="word" property="word" />
+    <result column="video_url" property="videoUrl" />
+    <result column="video_name" property="videoName" />
+    <result column="context_id" property="contextId"  />
+    <result column="sort" property="sort" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, word, video_url, video_name, context_id, sort, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from sx_dialogue
+    where id = #{id}
+  </select>
+
+  <select id="selectLastsortByTemplateId" resultType="java.lang.Long">
+    SELECT
+     sdd.sort
+    FROM
+        sx_dialogue sdd
+    LEFT JOIN sx_context scy ON scy.id = sdd.context_id
+    LEFT JOIN sx_plate spb ON spb.id = scy.plate_id
+    WHERE
+       spb.template_id = #{templateId}
+    order by sdd.sort DESC limit 1
+  </select>
+
+  <select id="selectDialogueListByTemplateId" resultMap="BaseResultMap">
+    SELECT
+    sdd.*
+    FROM
+    sx_template_all stq,
+    sx_plate spb,
+    sx_context scy,
+    sx_dialogue sdd
+    WHERE
+    stq.id =  #{templateId}
+    <if test="templateStatus != null">
+      AND stq.`status` != #{templateStatus}
+    </if>
+    AND spb.template_id = stq.id
+    AND spb.is_sys = 0
+    AND scy.plate_id = spb.id
+    AND sdd.context_id = scy.id
+    ORDER BY
+    sdd.sort;
+  </select>
+
+  <select id="selectDialogueListByUserTemplateId" resultMap="BaseResultMap">
+    SELECT
+    sdd.*
+    FROM
+    sx_template_user stq,
+    sx_plate spb,
+    sx_context scy,
+    sx_dialogue sdd
+    WHERE
+    stq.id = #{userTemplateId}
+    <if test="userTemplateStatus != null">
+      AND stq.`status` != #{userTemplateStatus}
+    </if>
+    AND spb.template_id = stq.id
+    AND spb.is_sys = 1
+    AND scy.plate_id = spb.id
+    AND sdd.context_id = scy.id
+    ORDER BY sdd.sort
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sx_dialogue
+    where id = #{id}
+  </delete>
+
+  <delete id="deleteByContextId" parameterType="java.lang.Long" >
+    delete from sx_dialogue
+    where id = #{contextId}
+  </delete>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.shengxun.entity.Dialogue" >
+    insert into sx_dialogue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="word != null" >
+        word,
+      </if>
+      <if test="videoUrl != null" >
+        video_url,
+      </if>
+      <if test="videoName != null" >
+        video_name,
+      </if>
+      <if test="contextId != null" >
+        context_id,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      update_time,
+      create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="word != null" >
+        #{word},
+      </if>
+      <if test="videoUrl != null" >
+        #{videoUrl},
+      </if>
+      <if test="videoName != null" >
+        #{videoName},
+      </if>
+      <if test="contextId != null" >
+        #{contextId},
+      </if>
+      <if test="sort != null" >
+        #{sort},
+      </if>
+      now(),
+      now(),
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.shengxun.entity.Dialogue" >
+    update sx_dialogue
+    <set >
+      <if test="word != null" >
+        word = #{word},
+      </if>
+      <if test="videoUrl != null" >
+        video_url = #{videoUrl},
+      </if>
+      <if test="videoName != null" >
+        video_name = #{videoName},
+      </if>
+      <if test="contextId != null" >
+        context_id = #{contextId},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort},
+      </if>
+      update_time =  now()
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shengxun.mapper.TemplateAllMapper" >
+  <resultMap id="BaseResultMap" type="com.shengxun.entity.TemplateAll" >
+    <id column="id" property="id"  />
+    <result column="name" property="name" />
+    <result column="status" property="status"  />
+    <result column="industry_id" property="industryAllId" />
+    <result column="update_time" property="updateTime"/>
+    <result column="create_time" property="createTime"/>
+    <result column="sort" property="sort" />
+  </resultMap>
+
+  <resultMap id="FullBaseResultMap" type="com.shengxun.entity.TemplateAll" >
+    <id column="template_id_stq" property="id"  />
+    <result column="name_stq" property="name" />
+    <result column="industry_id_stq" property="industryAllId"/>
+
+    <!--板块 -->
+    <collection property="plates" ofType="com.shengxun.entity.Plate">
+      <id column="plate_id_spb" property="id"  />
+      <result column="template_id_spb" property="templateId"  />
+      <result column="plate_name_spb" property="name"/>
+      <result column="plate_type_spb" property="type"/>
+      <result column="key_word_spb" property="keyWord"/>
+      <result column="plate_seq_spb" property="sort"  />
+      <result column="is_sys_spb" property="isSys"/>
+
+      <!--一级语境 -->
+      <collection property="contexts" ofType="com.shengxun.entity.Context">
+        <id column="context_id_scy_1" property="id" />
+        <result column="plate_id_scy_1" property="plateId" />
+        <result column="key_word_scy_1" property="keyWord"  />
+        <result column="pause_time_scy_1" property="pauseTime"/>
+        <result column="type_scy_1" property="type" />
+        <result column="next_context_id_scy_1" property="nextContextId" />
+        <result column="next_plate_id_scy_1" property="nextPlateId" />
+          <result column="next_type_scy_1" property="nextType" />
+        <result column="level_scy_1" property="level"  />
+
+        <!--一级语境的对话 -->
+        <collection property="dialogues" ofType="com.shengxun.entity.Dialogue">
+          <id column="dialogueId_sdd_1" property="id"  />
+          <result column="word_sdd_1" property="word" />
+          <result column="video_url_sdd_1" property="videoUrl" />
+          <result column="video_name_sdd_1" property="videoName" />
+          <result column="context_id_sdd_1" property="contextId"  />
+          <result column="sort_sdd_1" property="sort"  />
+        </collection>
+
+        <!--二级语境 -->
+        <collection property="sonContext" ofType="com.shengxun.entity.Context">
+          <id column="context_id_scy_2" property="id" />
+          <result column="plate_id_scy_2" property="plateId" />
+          <result column="parent_id_scy_2" property="parentId" />
+          <result column="key_word_scy_2" property="keyWord"  />
+          <result column="pause_time_scy_2" property="pauseTime"/>
+          <result column="type_scy_2" property="type" />
+          <result column="next_context_id_scy_2" property="nextContextId" />
+          <result column="next_plate_id_scy_2" property="nextPlateId" />
+            <result column="next_type_scy_2" property="nextType" />
+          <result column="level_scy_2" property="level"  />
+
+          <!--二级语境的对话 -->
+          <collection property="dialogues" ofType="com.shengxun.entity.Dialogue">
+            <id column="dialogueId_sdd_2" property="id"  />
+            <result column="word_sdd_2" property="word" />
+            <result column="video_url_sdd_2" property="videoUrl" />
+            <result column="video_name_sdd_2" property="videoName" />
+            <result column="context_id_sdd_2" property="contextId"  />
+            <result column="sort_sdd_2" property="sort"  />
+          </collection>
+        </collection>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, name, status, industry_id, update_time, create_time, sort
+  </sql>
+
+  <select id="selectFullByPrimaryKey" resultMap="FullBaseResultMap" parameterType="java.lang.Long" >
+    SELECT
+        stq.id template_id_stq,
+        stq.`name` name_stq,
+        stq.`industry_id` industry_id_stq,
+
+        spb.id plate_id_spb,
+        spb.template_id template_id_spb,
+        spb.`name` plate_name_spb,
+        spb.type plate_type_spb,
+        spb.key_word key_word_spb,
+        spb.sort plate_seq_spb,
+        spb.is_sys is_sys_spb,
+
+        scy.id context_id_scy_1,
+        scy.plate_id plate_id_scy_1,
+        scy.key_word key_word_scy_1,
+        scy.pause_time pause_time_scy_1,
+        scy.type type_scy_1,
+        scy.next_context_id next_context_id_scy_1,
+        scy.next_plate_id next_plate_id_scy_1,
+        scy.next_type next_type_scy_1,
+        scy.`level` level_scy_1,
+
+        sdd.id dialogueId_sdd_1,
+        sdd.word word_sdd_1,
+        sdd.video_url video_url_sdd_1,
+        sdd.video_name video_name_sdd_1,
+        sdd.context_id context_id_sdd_1,
+        sdd.sort sort_sdd_1,
+
+        scy_2.id context_id_scy_2,
+        scy_2.plate_id plate_id_scy_2,
+        scy_2.parent_id parent_id_scy_2,
+        scy_2.key_word key_word_scy_2,
+        scy_2.pause_time pause_time_scy_2,
+        scy_2.type type_scy_2,
+        scy_2.next_context_id next_context_id_scy_2,
+        scy_2.next_plate_id next_plate_id_scy_2,
+        scy_2.next_type next_type_scy_2,
+        scy_2.`level` level_scy_2,
+
+        sdd_2.id dialogueId_sdd_2,
+        sdd_2.word word_sdd_2,
+        sdd_2.video_url video_url_sdd_2,
+        sdd_2.video_name video_name_sdd_2,
+        sdd_2.context_id context_id_sdd_2,
+        sdd_2.sort sort_sdd_2
+
+    FROM
+        sx_template_all stq
+    LEFT JOIN sx_plate spb ON stq.id = spb.template_id AND spb.is_sys=0
+    LEFT JOIN sx_context scy ON scy.plate_id = spb.id AND scy.`level` = 1
+    LEFT JOIN sx_context scy_2 ON scy_2.parent_id = scy.id AND scy_2.`level` = 2
+    LEFT JOIN sx_dialogue sdd ON sdd.context_id = scy.id
+    LEFT JOIN sx_dialogue sdd_2 ON sdd_2.context_id = scy_2.id
+    where stq.id =#{templateId}
+    ORDER BY
+		spb.sort,scy.type,scy_2.type,sdd.sort,sdd_2.sort
+  </select>
+
+    <!--查询状态为1 的 全局模板，1为可用，0为不可用-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sx_template_all
+    where id = #{id}
+  <if test="status != null">
+      AND status != #{status}
+  </if>
+  </select>
+
+  <!-- 根据industry_id行业id查询所有的子模板 -->
+  <select id="selectByIndustryId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from sx_template_all
+    where industry_id = #{industryAllId} and status=1
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sx_template_all
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.shengxun.entity.TemplateAll" >
+    insert into sx_template_all
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="industryAllId != null" >
+        industry_id,
+      </if>
+        update_time,
+        create_time,
+      <if test="sort != null" >
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="industryAllId != null" >
+        #{industryAllId},
+      </if>
+      now(),
+      now(),
+      <if test="sort != null" >
+        #{sort},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.shengxun.entity.TemplateAll" >
+    update sx_template_all
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="industryAllId != null" >
+        industry_id = #{industryAllId},
+      </if>
+        update_time =  now(),
+      <if test="sort != null" >
+        sort = #{sort},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="updateStatus">
+      update sx_template_all
+      set status = #{status},update_time = now() where id = #{id}
+  </update>
+
+    <update id="updateReName">
+        update sx_template_all
+      set name = #{name},update_time = now() where id = #{id}
+    </update>
+</mapper>

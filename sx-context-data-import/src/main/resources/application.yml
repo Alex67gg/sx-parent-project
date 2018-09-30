@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+
+
+mybatis:
+  #映射器位置
+  mapper-locations: classpath:com/shengxun/mapper/*Mapper.xml
+  #类别名包的位置
+  type-aliases-package: com.shengxun.entity
+  configuration:
+    #全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存
+    cache-enabled: true

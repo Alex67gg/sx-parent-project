@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.shengxun.mapper.ContextAllMapper" >
+
+  <resultMap id="BaseResultMap" type="com.shengxun.entity.ContextAll" >
+    <id column="id" property="id" />
+    <result column="user_Id" property="user_Id"/>
+    <result column="type" property="type" />
+    <result column="flag" property="flag" />
+    <result column="context_layer" property="context_layer"  />
+    <result column="context" property="context"/>
+    <result column="layer_next" property="layer_next"/>
+    <result column="for_count" property="for_count" />
+    <result column="template_id" property="template_id" />
+    <result column="create_time" property="create_times"  />
+    <result column="update_time" property="update_time"  />
+    <result column="status" property="status"  />
+    <result column="key_word" property="key_word"/>
+    <result column="video_create_time" property="video_create_time"  />
+    <result column="video_update_time" property="video_update_time"  />
+  </resultMap>
+
+<sql id="Base_Column_List">
+    id,type,flag,context_layer,context,layer_next,for_count,template_id,create_time,update_time,status,key_word,video_url,
+    video_name,video_create_time,video_update_time
+</sql>
+
+  <!--查询所有-->
+  <select id="selectAll" resultType="ContextAll">
+      select
+          <include refid="Base_Column_List"/>
+        from sx_context_all
+  </select>
+  <!--插入-->
+  <insert id="insertContextAll" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="ContextAll" >
+    insert into sx_context_all
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="user_Id!= null" >
+        user_Id,
+      </if>
+      <if test="type!= null" >
+        type,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="context_layer != null" >
+        context_layer,
+      </if>
+      <if test="context != null" >
+        context,
+      </if>
+      <if test="layer_next != null" >
+        layer_next,
+      </if>
+
+      <if test="for_count != null" >
+        for_count,
+      </if>
+      <if test="template_id != null" >
+        template_id,
+      </if>
+      <if test="create_times != null" >
+        create_time,
+      </if>
+      <if test="update_time != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="key_word != null" >
+        key_word,
+      </if>
+      <if test="video_url != null" >
+        video_url,
+      </if>
+      <if test="video_name != null" >
+        video_name,
+      </if>
+      <if test="video_create_time != null" >
+        video_create_time,
+      </if>
+      <if test="video_update_time != null" >
+        video_update_time,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="user_Id != null" >
+        #{user_Id},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="flag != null" >
+        #{flag},
+      </if>
+      <if test="context_layer != null" >
+        #{context_layer},
+      </if>
+      <if test="context != null" >
+        #{context},
+      </if>
+      <if test="layer_next != null" >
+        #{layer_next},
+      </if>
+      <if test="for_count != null" >
+        #{for_count},
+      </if>
+      <if test="template_id != null" >
+        #{template_id},
+      </if>
+      <if test="create_times != null" >
+        #{create_times},
+      </if>
+      <if test="update_time != null" >
+        #{update_time},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="key_word != null" >
+        #{key_word},
+      </if>
+      <if test="video_url != null" >
+        #{video_url},
+      </if>
+      <if test="video_name != null" >
+        #{video_name},
+      </if>
+      <if test="video_create_time != null" >
+        #{video_create_time},
+      </if>
+      <if test="video_update_time != null" >
+        #{video_update_time},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id修改全局语境-->
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.shengxun.entity.ContextAll" >
+    update sx_context_all
+    <set >
+      <if test="user_Id != null" >
+        type = #{user_Id},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag},
+      </if>
+        <if test="context_layer != null" >
+          context_layer = #{context_layer},
+      </if>
+      <if test="context != null" >
+        context = #{context},
+      </if>
+
+      <if test="layer_next != null" >
+        layer_next = #{layer_next},
+      </if>
+
+      <if test="for_count != null" >
+        for_count = #{for_count},
+      </if>
+      <if test="template_id != null" >
+        template_id = #{template_id},
+      </if>
+      <if test="create_times != null" >
+        create_time = #{create_times},
+      </if>
+      <if test="update_time != null" >
+        update_time = #{update_time},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="key_word != null" >
+        key_word = #{key_word},
+      </if>
+
+      <if test="video_url != null" >
+        video_url = #{video_url},
+      </if>
+      <if test="video_name != null" >
+        video_name = #{video_name},
+      </if>
+      <if test="video_create_time != null" >
+        video_create_time = #{video_create_time},
+      </if>
+      <if test="video_update_time != null" >
+        video_update_time = #{video_update_time},
+      </if>
+
+    </set>
+    where id = #{id}
+  </update>
+
+  <!--根据模板的id 和用户类型，和语境类型查询 全局语境
+    temp_id是模板id   type是类型 0表示全局模板1 表示用户模板 flag是全局语境中的标记；
+   -->
+  <select id="selectContextAllByFlag" resultType="ContextAll">
+    select
+    <include refid="Base_Column_List"/>
+    from sx_context_all
+    WHERE `type`=#{type} AND template_id=#{template_id} AND flag=#{flag} and status != -1 ORDER BY context_layer,layer_next ASC
+  </select>
+
+  <!--根据模版的id 和 用户类型查询全局语境 -->
+  <select id="selectContextAllByTemplateIdAndType" resultType="ContextAll">
+    select
+    <include refid="Base_Column_List"/>
+    from sx_context_all
+    WHERE `type`=#{type} AND template_id=#{template_id}
+     and status != -1 ORDER BY context_layer,layer_next ASC;
+  </select>
+
+  <!-- 根据全局语境id查询全局语境-->
+  <select id="selectContextAllById" resultType="ContextAll">
+    select
+    <include refid="Base_Column_List"/>
+    from sx_context_all
+    WHERE id=#{id} and status != -1
+  </select>
+
+
+  <!--根据全局语境id删除语境-->
+  <delete id="delContextAll" parameterType="ContextAll">
+    update  sx_context_all  set status = -1 where id=#{id}
+  </delete>
+
+  <!--
+    上传文件更新全局语境表；
+  -->
+<update id="updateFileName">
+    update sx_context_all
+    set video_url = #{video_url},
+        video_create_time = #{video_create_time},
+        video_create_time = #{video_create_time},
+        video_name = #{video_name}
+    where id=#{id}
+</update>
+</mapper>

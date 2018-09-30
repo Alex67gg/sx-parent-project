@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shengxun.mapper.IndustryUserMapper" >
+  <resultMap id="BaseResultMap" type="com.shengxun.entity.IndustryUser" >
+    <id column="id" property="id"  />
+    <result column="folder_name" property="folderName"/>
+    <result column="user_id" property="userId"  />
+    <result column="folder_sort" property="folderSort"/>
+    <result column="folder_status" property="folderStatus"/>
+    <result column="update_time" property="updateTime"  />
+    <result column="create_time" property="createTime"  />
+    <result column="level" property="level"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, folder_name, user_id, folder_sort, folder_status, update_time, create_time,
+    level
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sx_industry_user
+    where id = #{id}
+  </select>
+
+
+  <select id="selectListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from sx_industry_user
+    where user_id = #{userId}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sx_industry_user
+    where id = #{id}
+  </delete>
+
+  <insert id="insert" parameterType="com.shengxun.entity.IndustryUser" >
+    insert into sx_industry_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="folderName != null" >
+        folder_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+
+      <if test="folderSort != null" >
+        folder_sort,
+      </if>
+      <if test="folderStatus != null" >
+        folder_status,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="folderName != null" >
+        #{folderName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId},
+      </if>
+
+      <if test="folderSort != null" >
+        #{folderSort},
+      </if>
+      <if test="folderStatus != null" >
+        #{folderStatus},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.shengxun.entity.IndustryUser" >
+    update sx_industry_user
+    <set >
+      <if test="folderName != null" >
+        folder_name = #{folderName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId},
+      </if>
+
+      <if test="folderSort != null" >
+        folder_sort = #{folderSort,jdbcType=VARCHAR},
+      </if>
+      <if test="folderStatus != null" >
+        folder_status = #{folderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="level != null" >
+        level = #{level},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+
+  <select id="selectSeqListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from sx_industry_user
+    where user_id = #{userId} and folder_status=1
+  </select>
+
+</mapper>
